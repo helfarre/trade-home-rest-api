@@ -58,7 +58,7 @@ public class PredictionsController {
 	private List<Stock> toBuy = new ArrayList<Stock>();
 	private List<Stock> toNotBuy = new ArrayList<Stock>();
     private HashMap<String, PredictionResult> hmap = new HashMap<String, PredictionResult>();
-	static final String URL_EMPLOYEES = "http://127.0.0.1:5000/";
+	static final String URL_EMPLOYEES = "https://prediction-web-service.herokuapp.com/";
 	//Get All purchases of a client
 	@GetMapping(value = "/getPrediction")
 	public ResponseEntity<?> getPrediction() {
