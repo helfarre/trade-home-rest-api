@@ -32,7 +32,7 @@ import com.helfa.TradeApi.Services.UserService;
 import com.fasterxml.uuid.Generators;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", exposedHeaders = "Authorization,RefreshToken")  
+@CrossOrigin(origins = "https://tradehome.herokuapp.com", allowedHeaders = "*", exposedHeaders = "Authorization,RefreshToken")  
 public class AuthenticationController {
 
 	@Autowired

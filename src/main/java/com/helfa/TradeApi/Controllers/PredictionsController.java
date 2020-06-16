@@ -34,7 +34,7 @@ import com.helfa.TradeApi.Services.StockService;
 import com.helfa.TradeApi.Services.UserService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", exposedHeaders = "Authorization")  
+@CrossOrigin(origins = "https://tradehome.herokuapp.com", allowedHeaders = "*", exposedHeaders = "Authorization")  
 
 @RequestMapping("/prediction")
 public class PredictionsController {

@@ -23,7 +23,7 @@ import com.helfa.TradeApi.Repositories.CategoryRepo;
 import com.helfa.TradeApi.Services.StockService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", exposedHeaders = "Authorization")  
+@CrossOrigin(origins = "https://tradehome.herokuapp.com", allowedHeaders = "*", exposedHeaders = "Authorization")  
 @RequestMapping("/Stock/*")
 public class StockController {
 	
