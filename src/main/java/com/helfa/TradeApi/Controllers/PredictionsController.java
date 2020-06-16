@@ -87,12 +87,12 @@ public class PredictionsController {
 			else {
 				toNotBuy.add(st);
 			}
-			try {
-				TimeUnit.SECONDS.sleep(30);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				TimeUnit.SECONDS.sleep(30);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 		}
 		List<User> clients = userService.getAllUsers();
 		for (User s : clients) {	
