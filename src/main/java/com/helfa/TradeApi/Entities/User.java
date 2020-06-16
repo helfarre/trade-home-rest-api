@@ -13,9 +13,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
-
+@Table(name = "client")
 public class User implements Serializable {
 	
 	/**
@@ -124,18 +125,6 @@ public class User implements Serializable {
 		Operations = operations;
 	}
 
-	public User(Long id, String lname, String fname, String email, String password, float balance,
-			List<Purchase> purchases, List<Operation> operations) {
-		super();
-		this.id = id;
-		this.lname = lname;
-		this.fname = fname;
-		this.email = email;
-		this.password = password;
-		this.balance = balance;
-		this.purchases = purchases;
-		Operations = operations;
-	}
 
 	public User() {
 	}
