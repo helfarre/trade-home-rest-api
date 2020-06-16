@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -74,6 +75,7 @@ public class PredictionsController {
 	                HttpMethod.GET, entity,PredictionResult.class);
 			PredictionResult res= response.getBody();
 			hmap.put(st.getSymbol(), res);
+			
 			for (float k : res.getPredictions()) {
 				if(res.getTodayPrice() < k) {
 					i++;
@@ -85,10 +87,15 @@ public class PredictionsController {
 			else {
 				toNotBuy.add(st);
 			}
+			try {
+				TimeUnit.SECONDS.sleep(30);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		List<User> clients = userService.getAllUsers();
-		for (User s : clients) {
-			
+		for (User s : clients) {	
 			if(s.getBalance()>=25 && s.isAutoTrade()) {
 			List<Purchase> ps = purchaseService.getPurchaseByUser(s.getId());
 			for (Stock buy : toBuy) {
