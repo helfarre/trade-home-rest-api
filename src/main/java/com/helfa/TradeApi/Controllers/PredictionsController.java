@@ -59,7 +59,7 @@ public class PredictionsController {
 	private List<Stock> toBuy = new ArrayList<Stock>();
 	private List<Stock> toNotBuy = new ArrayList<Stock>();
     private HashMap<String, PredictionResult> hmap = new HashMap<String, PredictionResult>();
-	static final String URL_EMPLOYEES = "http://128.227.10.18";
+	static final String URL_EMPLOYEES = "http://128.227.10.18/";
 	//Get All purchases of a client
 	@GetMapping(value = "/getPrediction")
 	public ResponseEntity<?> getPrediction() {
