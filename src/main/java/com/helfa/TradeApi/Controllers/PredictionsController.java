@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -16,8 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -84,9 +81,6 @@ public class PredictionsController {
 			if (i > 2) {
 				toBuy.add(st);
 			}
-			else {
-				toNotBuy.add(st);
-			}
 //			try {
 //				TimeUnit.SECONDS.sleep(30);
 //			} catch (InterruptedException e) {
@@ -139,10 +133,12 @@ public class PredictionsController {
 		
 	}
 	private void sellStock(Purchase buy, User s) {
+		System.out.println(buy.toString());
+		System.out.println(s.toString());
 		Operation op = new Operation();
 		op.setDate(new Date());
 		op.setOperationNature("SELL");
-		op.setPrice((hmap.get(buy.getStock().getSymbol()).getTodayPrice()));
+		op.setPrice((hmap.get(buy.getStock().getSymbol()).getTodayPrice())*buy.getQuantity());
 		op.setQuantity(buy.getQuantity());
 		op.setStock(buy.getStock());
 		op.setUser(s);
@@ -157,6 +153,8 @@ public class PredictionsController {
 	
 	
 	private void buyStock(Stock buy, User s) {
+		System.out.println(buy.toString());
+		System.out.println(s.toString());
 		Operation op = new Operation();
 		op.setDate(new Date());
 		op.setOperationNature("BUY");
@@ -194,7 +192,7 @@ public class PredictionsController {
 			{
 				System.out.println("SELL");
 			
-				List<Purchase> purchases= purchaseRepo.findByUser(user.get());
+				List<Purchase> purchases = purchaseRepo.findByUser(user.get());
 				Purchase purchase = null;
 				for (Purchase l : purchases) {
 					if (l.getStock().getSymbol().equals(operation.getStock().getSymbol())){
@@ -250,21 +248,29 @@ public class PredictionsController {
 	public void sellPurchase( Purchase purchase,  Long idUser) {
 		Optional<User> user = userService.getUserById(idUser);
 		if (user.isPresent()) {
-			Optional<Purchase> pur = purchaseService.getpurchaeByStockSymbol(purchase.getStock().getSymbol());
-				if(pur.isPresent())
+			List<Purchase> purchases = purchaseRepo.findByUser(user.get());
+			Purchase pur = null;
+			for (Purchase l : purchases) {
+				if (l.getStock().getSymbol().equals(purchase.getStock().getSymbol())){
+					pur = l;
+					break;
+				}
+			}				
+			if(pur!= null)
 				{
 					System.out.println("same");
-					pur.get().setQuantity(pur.get().getQuantity()-purchase.getQuantity());
-					purchaseService.addorUpdatePurchase(pur.get());
-					if (pur.get().getQuantity()==0) {
-						purchaseService.deletePurchase(pur.get().getId());
+					pur.setQuantity(pur.getQuantity()-purchase.getQuantity());
+					purchaseService.addorUpdatePurchase(pur);
+					if (pur.getQuantity()==0) {
+						purchaseService.deletePurchase(pur.getId());
 					}
-						return;				}
+					return ;
+				}
 				else
-					return;
+					return ;
 			}
 		else
-			return;
+			return ;
 	}
 	
 }
