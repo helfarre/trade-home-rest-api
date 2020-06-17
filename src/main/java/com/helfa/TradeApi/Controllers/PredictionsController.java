@@ -193,17 +193,27 @@ public class PredictionsController {
 			else 
 			{
 				System.out.println("SELL");
-				Optional <Purchase> purchase = purchaseRepo.findByStock_Symbol(operation.getStock().getSymbol());
-				if( !purchase.isPresent() || purchase.get().getQuantity() < operation.getQuantity())
-					return;
+			
+				List<Purchase> purchases= purchaseRepo.findByUser(user.get());
+				Purchase purchase = null;
+				for (Purchase l : purchases) {
+					if (l.getStock().getSymbol().equals(operation.getStock().getSymbol())){
+						purchase = l;
+						break;
+					}
+				}
+				if( purchase== null || purchase.getQuantity() < operation.getQuantity())
+					return ;
 				else
 				{
 					user.get().setBalance(user.get().getBalance()+operation.getPrice());
 					userService.addOrUpdateUser(user.get());
 					operation.setUser(user.get());
 					opService.addOrUpdateOperation(operation);
-					return;
+					return ;
 				}
+				
+				
 			}
 		}
 		else
