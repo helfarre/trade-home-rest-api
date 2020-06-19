@@ -74,7 +74,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/renew").permitAll()
 			.antMatchers("/User/Greeting").permitAll()
 			.antMatchers("/User/addUser").permitAll()
-
 			// to be removed later
 			.antMatchers("/prediction/getPrediction").permitAll()
 			.anyRequest().authenticated()

@@ -23,7 +23,6 @@ import com.helfa.TradeApi.Entities.User;
 import com.helfa.TradeApi.Services.CategoryService;
 
 @RestController
-@CrossOrigin(origins = "https://tradehome.herokuapp.com", allowedHeaders = "*", exposedHeaders = "Authorization")  
 
 @RequestMapping("/Category/*")
 public class CategoryController {

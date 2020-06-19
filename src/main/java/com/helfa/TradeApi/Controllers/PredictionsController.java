@@ -31,8 +31,6 @@ import com.helfa.TradeApi.Services.StockService;
 import com.helfa.TradeApi.Services.UserService;
 
 @RestController
-@CrossOrigin(origins = "https://tradehome.herokuapp.com", allowedHeaders = "*", exposedHeaders = "Authorization")  
-
 @RequestMapping("/prediction")
 public class PredictionsController {
 
@@ -54,17 +52,21 @@ public class PredictionsController {
 	@Autowired 
 	private RestTemplate restTemplate;
 	private List<Stock> toBuy = new ArrayList<Stock>();
-	private List<Stock> toNotBuy = new ArrayList<Stock>();
+	
     private HashMap<String, PredictionResult> hmap = new HashMap<String, PredictionResult>();
 	static final String URL_EMPLOYEES = "https://prediction-web-service.herokuapp.com/";
+//	static final String URL_EMPLOYEES = "http://127.0.0.1:5000/";
 	//Get All purchases of a client
 	@GetMapping(value = "/getPrediction")
-	public ResponseEntity<?> getPrediction() {
+	public void getPrediction() {
+		hmap = new HashMap<String, PredictionResult>();
+		toBuy = new ArrayList<Stock>();
 		HttpHeaders headers = new HttpHeaders();
 	    headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
 	     headers.setContentType(MediaType.APPLICATION_JSON);
 	     HttpEntity<PredictionResult> entity = new HttpEntity<PredictionResult>(headers);
 		List<Stock> stocklist = stockService.getAllStocks();
+		
 		int i ;
 		for (Stock st: stocklist) {
 			i=0;
@@ -72,33 +74,32 @@ public class PredictionsController {
 	                HttpMethod.GET, entity,PredictionResult.class);
 			PredictionResult res= response.getBody();
 			hmap.put(st.getSymbol(), res);
+		}
+		for (Stock st: stocklist) {
+			i=0;
 			
-			for (float k : res.getPredictions()) {
-				if(res.getTodayPrice() < k) {
+			for (float k : hmap.get(st.getSymbol()).getPredictions()) {
+				if(hmap.get(st.getSymbol()).getTodayPrice() < k) {
 					i++;
 				}
 			}
 			if (i > 2) {
 				toBuy.add(st);
 			}
-//			try {
-//				TimeUnit.SECONDS.sleep(30);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 		}
+
 		List<User> clients = userService.getAllUsers();
 		for (User s : clients) {	
 			if(s.getBalance()>=25 && s.isAutoTrade()) {
+				System.out.println("helloworld");
 			List<Purchase> ps = purchaseService.getPurchaseByUser(s.getId());
 			for (Stock buy : toBuy) {
 				if(!containsStock(ps,buy)) {
 					System.out.println(buy.toString());
 					buyStock(buy,s);
+
 					System.out.println();
-					System.out.println(s.toString()+buy.toString());
-					System.out.println();
+
 				}
 			}
 			int ind = 0;
@@ -120,8 +121,6 @@ public class PredictionsController {
 			System.out.println();
 			}
 		}
-//		float actualValue = response.getBody().getTodayPrice();
-		return new ResponseEntity<String> ("Done",HttpStatus.OK);
 	}
 	
 	private boolean containsStock(List<Purchase> purchases,Stock stock) {
@@ -210,8 +209,6 @@ public class PredictionsController {
 					opService.addOrUpdateOperation(operation);
 					return ;
 				}
-				
-				
 			}
 		}
 		else

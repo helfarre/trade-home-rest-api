@@ -23,7 +23,6 @@ import com.helfa.TradeApi.Repositories.RoleRepo;
 import com.helfa.TradeApi.Services.UserService;
 
 @RestController
-@CrossOrigin(origins = "https://tradehome.herokuapp.com", allowedHeaders = "*", exposedHeaders = "Authorization")  
 @RequestMapping("/User")
 
 public class UserController {

@@ -37,7 +37,7 @@ public class OperationServiceImpl implements OperationService {
 
 	@Override
 	public Operation addOrUpdateOperation(Operation operation) {
-		
+		System.out.println(operation);
 		operationRepo.saveAndFlush(operation);
 		return operation;
 	}

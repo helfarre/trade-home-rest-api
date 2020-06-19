@@ -32,7 +32,7 @@ import com.helfa.TradeApi.Services.UserService;
 import com.fasterxml.uuid.Generators;
 
 @RestController
-@CrossOrigin(origins = "https://tradehome.herokuapp.com", allowedHeaders = "*", exposedHeaders = "Authorization,RefreshToken")  
+
 public class AuthenticationController {
 
 	@Autowired
@@ -59,7 +59,7 @@ public class AuthenticationController {
 				authenticationRequest.getPassword()));
 		} catch(BadCredentialsException e)
 		{
-			return new ResponseEntity<Integer>(-1, httpHeader, HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<Integer>(-1, httpHeader, HttpStatus.OK);
 			//throw new Exception("incorrect username or password",e);
 		}
 		//si on arrive a ce stade les infos sont correctes donc on cree le token 

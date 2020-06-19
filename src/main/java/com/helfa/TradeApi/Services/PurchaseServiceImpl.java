@@ -47,7 +47,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 	public Optional<Purchase> deletePurchase(Long id) {
 		
 		Optional<Purchase> purchase = purchaseRepo.findById(id);
+		if(purchase.isPresent()) {
 		purchaseRepo.deleteById(id);
+		}
 		return purchase;
 	}
 
