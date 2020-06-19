@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +32,6 @@ import com.helfa.TradeApi.Services.StockService;
 import com.helfa.TradeApi.Services.UserService;
 
 @RestController
-@RequestMapping("/prediction")
 public class PredictionsController {
 
 	@Autowired
@@ -56,8 +56,8 @@ public class PredictionsController {
     private HashMap<String, PredictionResult> hmap = new HashMap<String, PredictionResult>();
 	static final String URL_EMPLOYEES = "https://prediction-web-service.herokuapp.com/";
 //	static final String URL_EMPLOYEES = "http://127.0.0.1:5000/";
-	//Get All purchases of a client
-	@GetMapping(value = "/getPrediction")
+	//Get All purchases of a client	
+	@Scheduled(cron = "0 0 4 */3 * ?")
 	public void getPrediction() {
 		hmap = new HashMap<String, PredictionResult>();
 		toBuy = new ArrayList<Stock>();
